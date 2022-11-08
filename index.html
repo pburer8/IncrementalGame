@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marie's Incremental Game</title>
+</head>
+<style>
+    body {
+        background-color: blanchedalmond;
+    }
+
+    h1 {
+        text-align: center
+    }
+
+    #resources {
+        text-align: center
+    }
+
+    .layer {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: darkgray;
+    }
+
+    .layer button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.0s
+    }
+
+    .layer button:hover {
+        background-color: aqua;
+    }
+
+    .layercontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: darkgray;
+    }
+
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.0s
+    }
+
+    .tab button:hover {
+        background-color: aqua;
+    }
+
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+</style>
+<script src="main.js" charset="utf-8" type="text/javascript"></script>
+<body>
+    <h1> The Button Game </h1>
+    <div id = "resources">
+        <p>Numbers: <span id = "numbers">0</span></p>
+        <p>Increment per click: <span id = "increment">1</span></p>
+        <p>First derivative: <span id = "firstDerivative">0</span></p>
+        <p>Second derivative: <span id = "secondDerivative">0</span></p>
+    </div>
+    <div class = "layer">
+        <button class = "layerlinks" onClick = "openTab(event, 'real numbers', 'layercontent', 'layerlinks')">Real Numbers</button>
+        <button class = "layerlinks" onClick = "openTab(event, 'complex numbers', 'layercontent', 'layerlinks')">Complex Numbers</button>
+    </div>
+
+    <div id = "real numbers" class = "layercontent">
+        <div class = "tab">
+            <button class = "tablinks" onClick = "openTab(event, 'derivatives', 'tabcontent', 'tablinks')">Derivatives</button>
+            <button class = "tablinks" onClick = "openTab(event, 'upgrades', 'tabcontent', 'tablinks')">Upgrades</button>
+        </div>
+        
+        <div id = "derivatives" class = "tabcontent">
+            <button onClick = "increment(1)">Get some numbers(s)</button>
+            <br>
+            <button onClick = "buyFirstDerivative()" id = "buyFirstDerivative">Buy the first derivative <br> Cost: 50</button>
+            <br>
+            <button onClick = "buySecondDerivative()"  id = "buySecondDerivative">Buy the second derivative <br> Cost: 500</button>
+        </div>
+    
+        <div id = "upgrades" class = "tabcontent">
+            <button onClick = "buyIncrementUpgrade()">Increase increment per click <br> Cost: <span id = "incrementCost">10</span></button>
+        </div>
+        </div>
+    </div>
+
+    <div id = "complex numbers" class = "layercontent">
+        <div class = "tab">
+            <button class = "tablinks" onClick = "openTab(event, 'complexconjugate', 'tabcontent', 'tablinks')">Complex Conjugate</button>
+        </div>
+
+        <div id = "complexconjugate" class = "tabcontent">
+            <button>Reset all progress for <span id = "resetConjugate">0</span> i</button>
+        </div>
+    </div>
+
+
+</body>
+</html>
