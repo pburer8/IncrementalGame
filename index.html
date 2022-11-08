@@ -5,83 +5,89 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marie's Incremental Game</title>
+    <script src="node_modules\jquery\dist\jquery.js"></script>
 </head>
+<script src="main.js" charset="utf-8" type="text/javascript"></script>
 <style>
     body {
-        background-color: blanchedalmond;
-    }
+    background-color: blanchedalmond;
+}
 
-    h1 {
-        text-align: center
-    }
+h1 {
+    text-align: center
+}
 
-    #resources {
-        text-align: center
-    }
+#resources {
+    text-align: center
+}
 
-    .layer {
-        overflow: hidden;
-        border: 1px solid #ccc;
-        background-color: darkgray;
-    }
+.layer {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: darkgray;
+}
 
-    .layer button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        transition: 0.0s
-    }
+.layer button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.0s
+}
 
-    .layer button:hover {
-        background-color: aqua;
-    }
+.layer button:hover {
+    background-color: aqua;
+}
 
-    .layercontent {
-        display: none;
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        border-top: none;
-    }
+.layercontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
 
-    .tab {
-        overflow: hidden;
-        border: 1px solid #ccc;
-        background-color: darkgray;
-    }
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: darkgray;
+}
 
-    .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        transition: 0.0s
-    }
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.0s
+}
 
-    .tab button:hover {
-        background-color: aqua;
-    }
+.tab button:hover {
+    background-color: aqua;
+}
 
-    .tabcontent {
-        display: none;
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        border-top: none;
-    }
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.buy{
+    background-color: grey;
+    border: 1px solid black;
+}
 </style>
-<script src="main.js" charset="utf-8" type="text/javascript"></script>
 <body>
     <h1> The Numbers Game </h1>
     <div id = "resources">
         <p>Numbers: <span id = "numbers">0</span></p>
-        <p>Increment per click: <span id = "increment">1</span></p>
         <p>First derivative: <span id = "firstDerivative">0</span></p>
         <p>Second derivative: <span id = "secondDerivative">0</span></p>
         <p>Third derivative: <span id = "thirdDerivative">0</span></p>
+        <p>Fourth derivative: <span id = "fourthDerivative">0</span></p>
     </div>
     <div class = "layer">
         <button class = "layerlinks" onClick = "openTab(event, 'real numbers', 'layercontent', 'layerlinks')">Real Numbers</button>
@@ -95,17 +101,17 @@
         </div>
         
         <div id = "derivatives" class = "tabcontent">
-            <button onClick = "increment(1)">Get some numbers(s)</button>
+            <button class = "buy" onClick = "buyDerivative(1)" id = "buyFirstDerivative">Increase the first derivative <br> Cost: <span class = "cost" id = "firstDerivativeCost"></span></button>
             <br>
-            <button onClick = "buyFirstDerivative()" id = "buyFirstDerivative">Buy the first derivative <br> Cost: 50</button>
+            <button class = "buy" onClick = "buyDerivative(2)" id = "buySecondDerivative">Increase the second derivative <br> Cost: <span class = "cost" id = 'secondDerivativeCost'></span></button>
             <br>
-            <button onClick = "buySecondDerivative()" id = "buySecondDerivative">Buy the second derivative <br> Cost: 500</button>
+            <button class = "buy" onClick = "buyDerivative(3)" id = "buyThirdDerivative">Increase the third derivative <br> Cost: <span class = "cost" id = "thirdDerivativeCost"></span></button>
             <br>
-            <button onClick = "buyThirdDerivative()" id = "buyThirdDerivative">Buy the third derivative <br> Cost: 5000</button>
+            <button class = "buy" onClick = "buyDerivative(4)" id = "buyFourthDerivative">Increase the fourth derivative <br> Cost: <span class = "cost" id = "fourthDerivativeCost"></span></button>
         </div>
     
         <div id = "upgrades" class = "tabcontent">
-            <button onClick = "buyIncrementUpgrade()">Increase increment per click <br> Cost: <span id = "incrementCost">10</span></button>
+            <button class = "buy" onClick = "buyTickSpeed()" id = "buyTickSpeed">Increase tickspeed by <span id = "tickSpeedIncrease">12</span>% <br> Cost: <span class = "cost" id = "tickSpeedCost">1000.00</span></button>
         </div>
         </div>
     </div>

@@ -1,79 +1,64 @@
 var gameData = {
-    "numbers": 0,
-    "increment": 1,
-    "incrementCost": 10,
+    "numbers": 10,
+    "tickSpeedCost": 1000,
+    "tickSpeed": 1000,
+    "tickSpeedIncrease": 12,
+
     "firstDerivative": 0,
-    "firstDerivativeCost": 50,
-    "firstBought": false,
+    "firstDerivativeCost": 10,
+    "firstManual": 0,
+    "firstMult": 1,
+    "firstCostMult": 10,
+    
     "secondDerivative": 0,
-    "secondDerivativeCost": 500,
-    "secondBought": false,
+    "secondDerivativeCost": 100,
+    "secondManual": 0,
+    "secondMult": 1,
+    "secondCostMult": 100,
+
     "thirdDerivative": 0,
-    "thirdDerivativeCost": 5000,
-    "thirdBought": false
+    "thirdDerivativeCost": 1000,
+    "thirdManual": 0,
+    "thirdMult": 1,
+    "thirdCostMult": 1000,
+
+    "fourthDerivative":0,
+    "fourthDerivativeCost": 10000,
+    "fourthManual": 0,
+    "fourthMult": 1,
+    "fourthCostMult": 10000
 }
 
+var keys = {1:"first", 2:"second", 3:"third", 4:"fourth"}
+var v = ["DerivativeCost", "Derivative", "Manual", "Mult", "CostMult"]
 
-
-function increment(number)
+function buyDerivative(number)
 {
-    gameData["numbers"] += gameData["increment"] * number
-}
+    var place = keys[number]
 
-function buyIncrementUpgrade()
-{
-    if (gameData["numbers"] >= gameData["incrementCost"])
+    if (gameData["numbers"] >= gameData[place+v[0]])
     {
-        gameData["numbers"] -= gameData["incrementCost"]
-        gameData["incrementCost"] *= 2
-        gameData["increment"] += 1
-    }
-}
+        gameData["numbers"] -= gameData[place+v[0]]
+        gameData[place+v[1]] += 1
+        gameData[place+v[2]] += 1
 
-
-function buyFirstDerivative()
-{
-    if (gameData["numbers"] >= gameData["firstDerivativeCost"])
-    {
-        gameData["numbers"] -= gameData["firstDerivativeCost"]
-        if (!gameData["firstBought"])
+        if (gameData[place+v[2]]%10 == 0)
         {
-            gameData["firstBought"] = true
-            document.getElementById("buyFirstDerivative").innerHTML = "Increase first derivative <br> Cost: <span id = 'firstDerivativeCost'>150</span>"
+            gameData[place+v[3]] *= 2
+            gameData[place+v[0]] *= gameData[place+v[4]]
         }
-        gameData["firstDerivativeCost"] *= 3
-        gameData["firstDerivative"] += 1
     }
 }
 
-function buySecondDerivative()
+function buyTickSpeed()
 {
-    if (gameData["numbers"] >= gameData["secondDerivativeCost"])
+    if (gameData["numbers"] >= gameData["tickSpeedCost"])
     {
-        gameData["numbers"] -= gameData["secondDerivativeCost"]
-        if (!gameData["secondBought"])
-        {
-            gameData["secondBought"] = true
-            document.getElementById("buySecondDerivative").innerHTML = "Increase second derivative <br> Cost: <span id = 'secondDerivativeCost'>2000</span>"
-        }
-        gameData["secondDerivativeCost"] *= 4
-        gameData["secondDerivative"] += 1
+        gameData["numbers"] -= gameData["tickSpeedCost"]
+        gameData["tickSpeed"] *= (1+(gameData["tickSpeedIncrease"])/100)
+        gameData["tickSpeedCost"] *= 10
     }
-}
 
-function buyThirdDerivative()
-{
-    if (gameData["numbers"] >= gameData["thirdDerivativeCost"]) 
-    {
-        gameData["numbers"] -= gameData["secondDerivativeCost"]
-        if (!gameData["thirdBought"])
-        {
-            gameData["thirdBought"] = true
-            document.getElementById("buyThirdDerivative").innerHTML = "Increase third derivative <br> Cost: <span id = 'thirdDerivativeCost'>25000</span>"
-        }
-        gameData["thirdDerivativeCost"] *= 5
-        gameData["thirdDerivative"] += 1
-    }
 }
 
 function update()
@@ -85,7 +70,13 @@ function update()
         id = idList[i].id
         if (id in gameData)
         {
-            document.getElementById(id).innerHTML = gameData[id]
+            if (gameData[id] >= 10000)
+            {
+                document.getElementById(id).innerHTML = Number.parseFloat(gameData[id]).toExponential(2)
+            } else
+            {
+                document.getElementById(id).innerHTML = gameData[id].toFixed(2)
+            }
         }
     }
 }
@@ -112,13 +103,36 @@ function openTab(event, tab, tabC, tabL)
     event.currentTarget.className += " active";
 }
 
+function highlight()
+{
+    var spans = $(".cost")
+
+    for (let i = 0; i<spans.length; i++)
+    {
+        let value = parseFloat(spans[i].innerHTML)
+        if (!(value == NaN) && value <= gameData["numbers"])
+        {
+            spans[i].parentElement.style.backgroundColor = "lightgrey"
+        } else if (!(value == NaN) && value > gameData["numbers"])
+        {
+            spans[i].parentElement.style.backgroundColor = "grey"
+        }
+        console.log(spans[i])
+        console.log(spans[i].parentElement)
+        console.log()
+    }
+}
+
 window.setInterval(function()
 {
-    gameData["secondDerivative"] += gameData["thirdDerivative"]
-    gameData["firstDerivative"] += gameData["secondDerivative"]
-    increment(gameData["firstDerivative"])
+    for (let i = 4; i > 1; i--)
+    {
+        gameData[keys[i-1]+v[1]] += gameData[keys[i]+v[1]] * gameData[keys[i]+v[3]] * (gameData["tickSpeed"]/1000)
+    }
+    gameData["numbers"] += gameData["firstDerivative"] * gameData["firstMult"] * gameData["tickSpeed"]/1000
 }, 1000)
 window.setInterval(function()
 {
     update()
+    highlight()
 }, 10)
