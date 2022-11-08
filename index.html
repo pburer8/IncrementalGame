@@ -81,6 +81,7 @@
         <p>Increment per click: <span id = "increment">1</span></p>
         <p>First derivative: <span id = "firstDerivative">0</span></p>
         <p>Second derivative: <span id = "secondDerivative">0</span></p>
+        <p>Third derivative: <span id = "thirdDerivative">0</span></p>
     </div>
     <div class = "layer">
         <button class = "layerlinks" onClick = "openTab(event, 'real numbers', 'layercontent', 'layerlinks')">Real Numbers</button>
@@ -98,7 +99,9 @@
             <br>
             <button onClick = "buyFirstDerivative()" id = "buyFirstDerivative">Buy the first derivative <br> Cost: 50</button>
             <br>
-            <button onClick = "buySecondDerivative()"  id = "buySecondDerivative">Buy the second derivative <br> Cost: 500</button>
+            <button onClick = "buySecondDerivative()" id = "buySecondDerivative">Buy the second derivative <br> Cost: 500</button>
+            <br>
+            <button onClick = "buyThirdDerivative()" id = "buyThirdDerivative">Buy the third derivative <br> Cost: 5000</button>
         </div>
     
         <div id = "upgrades" class = "tabcontent">

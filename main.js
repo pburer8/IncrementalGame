@@ -4,8 +4,13 @@ var gameData = {
     "incrementCost": 10,
     "firstDerivative": 0,
     "firstDerivativeCost": 50,
+    "firstBought": false,
     "secondDerivative": 0,
-    "secondDerivativeCost": 500
+    "secondDerivativeCost": 500,
+    "secondBought": false,
+    "thirdDerivative": 0,
+    "thirdDerivativeCost": 5000,
+    "thirdBought": false
 }
 
 
@@ -31,14 +36,10 @@ function buyFirstDerivative()
     if (gameData["numbers"] >= gameData["firstDerivativeCost"])
     {
         gameData["numbers"] -= gameData["firstDerivativeCost"]
-        if (gameData["firstDerivative"] == 0)
+        if (!gameData["firstBought"])
         {
-            let oldButton = document.getElementById("buyFirstDerivative")
-            let newButton = document.createElement("button");
-            newButton.setAttribute("onClick", "buyFirstDerivative()")
-            newButton.innerHTML = "Increase first derivative <br> Cost: <span id = \"firstDerivativeCost\">150</span>"
-            
-            oldButton.parentNode.replaceChild(newButton, oldButton)
+            gameData["firstBought"] = true
+            document.getElementById("buyFirstDerivative").innerHTML = "Increase first derivative <br> Cost: <span id = 'firstDerivativeCost'>150</span>"
         }
         gameData["firstDerivativeCost"] *= 3
         gameData["firstDerivative"] += 1
@@ -50,17 +51,28 @@ function buySecondDerivative()
     if (gameData["numbers"] >= gameData["secondDerivativeCost"])
     {
         gameData["numbers"] -= gameData["secondDerivativeCost"]
-        if (gameData["secondDerivative"] == 0)
+        if (!gameData["secondBought"])
         {
-            let oldButton = document.getElementById("buySecondDerivative")
-            let newButton = document.createElement("button");
-            newButton.setAttribute("onClick", "buySecondDerivative()")
-            newButton.innerHTML = "Increase second derivative <br> Cost: <span id = \"secondDerivativeCost\">2000</span>"
-            
-            oldButton.parentNode.replaceChild(newButton, oldButton)
+            gameData["secondBought"] = true
+            document.getElementById("buySecondDerivative").innerHTML = "Increase second derivative <br> Cost: <span id = 'secondDerivativeCost'>2000</span>"
         }
         gameData["secondDerivativeCost"] *= 4
         gameData["secondDerivative"] += 1
+    }
+}
+
+function buyThirdDerivative()
+{
+    if (gameData["numbers"] >= gameData["thirdDerivativeCost"]) 
+    {
+        gameData["numbers"] -= gameData["secondDerivativeCost"]
+        if (!gameData["thirdBought"])
+        {
+            gameData["thirdBought"] = true
+            document.getElementById("buyThirdDerivative").innerHTML = "Increase third derivative <br> Cost: <span id = 'thirdDerivativeCost'>25000</span>"
+        }
+        gameData["thirdDerivativeCost"] *= 5
+        gameData["thirdDerivative"] += 1
     }
 }
 
@@ -102,6 +114,7 @@ function openTab(event, tab, tabC, tabL)
 
 window.setInterval(function()
 {
+    gameData["secondDerivative"] += gameData["thirdDerivative"]
     gameData["firstDerivative"] += gameData["secondDerivative"]
     increment(gameData["firstDerivative"])
 }, 1000)
