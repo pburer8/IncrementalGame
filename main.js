@@ -50,7 +50,7 @@ function buySecondDerivative()
     if (gameData["numbers"] >= gameData["secondDerivativeCost"])
     {
         gameData["numbers"] -= gameData["secondDerivativeCost"]
-        if (gameData[""] == 0)
+        if (gameData["secondDerivative"] == 0)
         {
             let oldButton = document.getElementById("buySecondDerivative")
             let newButton = document.createElement("button");
@@ -102,8 +102,8 @@ function openTab(event, tab, tabC, tabL)
 
 window.setInterval(function()
 {
-    increment(gameData["firstDerivative"])
     gameData["firstDerivative"] += gameData["secondDerivative"]
+    increment(gameData["firstDerivative"])
 }, 1000)
 window.setInterval(function()
 {
