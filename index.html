@@ -76,19 +76,26 @@ h1 {
     border-top: none;
 }
 
-.buy{
+.rel{
+    position: relative;
+}
+
+.table{
+    width: 90%;
+}
+
+#purchase{
+    width: 20%;
+    float: right;
     background-color: grey;
     border: 1px solid black;
+    top: 50%;
 }
 </style>
-<body>
+<body onload = "initialize()">
     <h1> The Numbers Game </h1>
     <div id = "resources">
-        <p>Numbers: <span id = "numbers">0</span></p>
-        <p>First derivative: <span id = "firstDerivative">0</span></p>
-        <p>Second derivative: <span id = "secondDerivative">0</span></p>
-        <p>Third derivative: <span id = "thirdDerivative">0</span></p>
-        <p>Fourth derivative: <span id = "fourthDerivative">0</span></p>
+        
     </div>
     <div class = "layer">
         <button class = "layerlinks" onClick = "openTab(event, 'real numbers', 'layercontent', 'layerlinks')">Real Numbers</button>
@@ -102,13 +109,24 @@ h1 {
         </div>
         
         <div id = "derivatives" class = "tabcontent">
-            <button class = "buy" onClick = "buyDerivative(1)" id = "buyFirstDerivative">Increase the first derivative <br> Cost: <span class = "cost" id = "firstDerivativeCost"></span></button>
-            <br>
-            <button class = "buy" onClick = "buyDerivative(2)" id = "buySecondDerivative">Increase the second derivative <br> Cost: <span class = "cost" id = 'secondDerivativeCost'></span></button>
-            <br>
-            <button class = "buy" onClick = "buyDerivative(3)" id = "buyThirdDerivative">Increase the third derivative <br> Cost: <span class = "cost" id = "thirdDerivativeCost"></span></button>
-            <br>
-            <button class = "buy" onClick = "buyDerivative(4)" id = "buyFourthDerivative">Increase the fourth derivative <br> Cost: <span class = "cost" id = "fourthDerivativeCost"></span></button>
+            <table id = "derivTable" class = "table">
+                <thead>
+                    <tr style = "width: 100%; font-size: 16px; display: table-row;">
+                        <td class = "rel" style = "width: 32%;">
+                            Derivatives:
+                        </td>
+                        <td class = "rel">
+                            Amounts:
+                        </td>
+                        <td style = "width: 20%; float: right;">
+                            Purchase:
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id = "derivTableBody">
+
+                </tbody>
+            </table>
         </div>
     
         <div id = "upgrades" class = "tabcontent">

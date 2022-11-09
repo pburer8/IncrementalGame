@@ -3,49 +3,133 @@ var gameData = {
     "tickSpeedCost": 1000,
     "tickSpeed": 1000,
     "tickSpeedIncrease": 12,
-
-    "firstDerivative": 0,
-    "firstDerivativeCost": 10,
-    "firstManual": 0,
-    "firstMult": 1,
-    "firstCostMult": 10,
-    
-    "secondDerivative": 0,
-    "secondDerivativeCost": 100,
-    "secondManual": 0,
-    "secondMult": 1,
-    "secondCostMult": 100,
-
-    "thirdDerivative": 0,
-    "thirdDerivativeCost": 1000,
-    "thirdManual": 0,
-    "thirdMult": 1,
-    "thirdCostMult": 1000,
-
-    "fourthDerivative":0,
-    "fourthDerivativeCost": 10000,
-    "fourthManual": 0,
-    "fourthMult": 1,
-    "fourthCostMult": 10000
 }
 
-var keys = {1:"first", 2:"second", 3:"third", 4:"fourth"}
-var v = ["DerivativeCost", "Derivative", "Manual", "Mult", "CostMult"]
+function initialize()
+{
+    var deriv = $("#derivTableBody")
 
-function buyDerivative(number)
+    
+    
+    for (var key in keys)
+    {
+        gameData[keys[key]+v[0]] = 10**key
+        gameData[keys[key]+v[1]] = 0
+        gameData[keys[key]+v[2]] = 0
+        gameData[keys[key]+v[3]] = 1
+        gameData[keys[key]+v[4]] = 10*(10**key)
+        gameData[keys[key]+v[5]] = 10
+        gameData[keys[key]+v[6]] = 10*gameData[keys[key]+v[0]]
+
+        let row = document.createElement("tr")
+        row.id = keys[key]+"Row"
+        row.style = "font-size: 16px; display: table-row;"
+
+        let derivative = document.createElement("td")
+        derivative.innerText = keys[key].charAt(0).toUpperCase() + keys[key].slice(1) + " Derivative x"
+        derivative.className = "rel"
+        derivative.style.width = "32%"
+
+
+        let mult = document.createElement("span")
+        mult.id = keys[key]+"Mult"
+
+        derivative.append(mult)
+        row.append(derivative)
+
+        let amt = document.createElement("td")
+        amt.className = "rel"
+
+        let amount = document.createElement("span")
+        amount.id = keys[key]+"Derivative"
+        
+        let manual = document.createElement("span")
+        manual.innerHTML = "   (<span id = '"+keys[key]+"Manual'></span>)"
+
+        amt.append(amount)
+        amt.append(manual)
+        row.append(amt)
+
+        let btnTD10 = document.createElement("td")
+        btnTD10.id = "purchase"
+
+        let btn10 = document.createElement("button")
+        btn10.innerHTML = "Increase " + keys[key] + " derivative to 10 <br> Cost: "
+        btn10.setAttribute("onClick", "buyDerivative("+key+",true)")
+        let btn10Span = document.createElement("span")
+        btn10Span.id = keys[key]+"Until10Cost"
+        btn10Span.className = "cost"
+
+        btn10.append(btn10Span)
+        btnTD10.append(btn10)
+        row.append(btnTD10)
+
+        let btnTD = document.createElement("td")
+        btnTD.id = "purchase"
+
+        let btn = document.createElement("button")
+        btn.innerHTML = "Increase " +keys[key] + " derivative <br> Cost: "
+        btn.setAttribute("onClick", "buyDerivative("+key+",false)")
+        let btnSpan = document.createElement("span")
+        btnSpan.id = keys[key]+"DerivativeCost"
+        btnSpan.className = "cost"
+
+        btn.append(btnSpan)
+        btnTD.append(btn)
+        row.append(btnTD)
+
+        deriv.append(row)
+    }
+    
+
+    var resources = $("#resources")
+
+    let numbers = document.createElement("p")
+    numbers.innerText = "Numbers: "
+    let numbersSpan = document.createElement("span")
+    numbersSpan.setAttribute("id", "numbers")
+
+    numbers.append(numbersSpan)
+    resources.append(numbers)
+}
+
+var keys = {1:"first", 2:"second", 3:"third", 4:"fourth", 5:"fifth", 6:"sixth", 7:"seventh", 8:"eighth"}
+var v = ["DerivativeCost", "Derivative", "Manual", "Mult", "CostMult", "Until10", "Until10Cost"]
+
+function buyDerivative(number, until10)
 {
     var place = keys[number]
-
-    if (gameData["numbers"] >= gameData[place+v[0]])
+    
+    if (until10)
     {
-        gameData["numbers"] -= gameData[place+v[0]]
-        gameData[place+v[1]] += 1
-        gameData[place+v[2]] += 1
-
-        if (gameData[place+v[2]]%10 == 0)
+        if (gameData["numbers"] >= gameData[place+v[0]]*(gameData[place+v[5]]))
         {
+            gameData["numbers"] -= gameData[place+v[0]]*(gameData[place+v[5]])
+            gameData[place+v[1]] += (gameData[place+v[5]])
+            gameData[place+v[2]] = 0
             gameData[place+v[3]] *= 2
+            gameData[place+v[5]] = 10
             gameData[place+v[0]] *= gameData[place+v[4]]
+            gameData[place+v[6]] = 10*gameData[place+v[0]]
+        }
+    } else
+    {
+        if (gameData["numbers"] >= gameData[place+v[0]])
+        {
+            gameData["numbers"] -= gameData[place+v[0]]
+            gameData[place+v[1]] += 1
+            gameData[place+v[2]] += 1
+            gameData[place+v[5]] -= 1
+            gameData[place+v[6]] -= gameData[place+v[0]]
+
+            if (gameData[place+v[2]]%10 == 0)
+            {
+                gameData[place+v[5]] = 10
+                gameData[place+v[3]] *= 2
+                gameData[place+v[0]] *= gameData[place+v[4]]
+                gameData[place+v[2]] = 0
+                gameData[place+v[6]] = 10 * gameData[place+v[0]]
+            }
         }
     }
 }
@@ -75,7 +159,13 @@ function update()
                 document.getElementById(id).innerHTML = Number.parseFloat(gameData[id]).toExponential(2)
             } else
             {
-                document.getElementById(id).innerHTML = gameData[id].toFixed(2)
+                if (gameData[id]%1 == 0)
+                {
+                    document.getElementById(id).innerHTML = gameData[id]
+                } else
+                {
+                    document.getElementById(id).innerHTML = gameData[id].toFixed(2)
+                }
             }
         }
     }
@@ -117,9 +207,6 @@ function highlight()
         {
             spans[i].parentElement.style.backgroundColor = "grey"
         }
-        console.log(spans[i])
-        console.log(spans[i].parentElement)
-        console.log()
     }
 }
 
