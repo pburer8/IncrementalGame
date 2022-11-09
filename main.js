@@ -9,8 +9,6 @@ function initialize()
 {
     var deriv = $("#derivTableBody")
 
-    
-    
     for (var key in keys)
     {
         gameData[keys[key]+v[0]] = 10**key
